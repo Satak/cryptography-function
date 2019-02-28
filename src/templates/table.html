@@ -1,0 +1,38 @@
+<h3>REST API Documentation</h3>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Method</th>
+      <th scope="col">Route</th>
+      <th scope="col">Payload</th>
+      <th scope="col">Info</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">GET</th>
+      <td><a href="/cryptography">/cryptography</a></td>
+      <td></td>
+      <td>Render UI</td>
+    </tr>
+    <tr>
+      <th scope="row">POST</th>
+      <td><a href="/cryptography">/cryptography</a></td>
+      <td><code>{action: "get_key"}</code></td>
+      <td>Creates a secret key</td>
+    </tr>
+    <tr>
+      <th scope="row">POST</th>
+      <td><a href="/cryptography">/cryptography</a></td>
+      <td><code>{action: "encrypt", key: str, data: str}</code></td>
+      <td>Encrypts data with a key</td>
+    </tr>
+    <tr>
+      <th scope="row">POST</th>
+      <td><a href="/cryptography">/cryptography</a></td>
+      <td><code>{action: "decrypt", key: str, data: str}</code></td>
+      <td>Decrypts data with a key</td>
+    </tr>
+  </tbody>
+</table>
