@@ -30,8 +30,8 @@
                 <textarea class="form-control" id="data" rows="3"></textarea>
             </div>
             <button type="button" class="btn btn-primary" onclick="getKey()">Get Key</button>
-            <button type="button" class="btn btn-primary" onclick="encrypt()">Encrypt</button>
-            <button type="button" class="btn btn-primary" onclick="decrypt()">Decrypt</button>
+            <button type="button" class="btn btn-primary" onclick="cryptography('encrypt')">Encrypt</button>
+            <button type="button" class="btn btn-primary" onclick="cryptography('decrypt')">Decrypt</button>
         </form>
     </div>
 
@@ -46,70 +46,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    <script>
-        function getKey() {
-            const data = {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ action: 'get_key' })
-            }
-            const url = '/cryptography'
-            fetch(url, data)
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (myJson) {
-                    $("#key").html(myJson.data)
-                });
-        }
-        function encrypt() {
-            let key = $("#key").val()
-            let dataToEncrypt = $("#data").val()
-            console.log(dataToEncrypt, key)
-            const url = '/cryptography'
-            const data = {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ action: 'encrypt', key: key, data: dataToEncrypt })
-            }
-            
-            fetch(url, data)
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (myJson) {
-                    console.log(myJson)
-                    $("#data").val(myJson.data)
-                });
-        }
-        function decrypt() {
-            let key = $("#key").val()
-            let dataToDecrypt = $("#data").val()
-            const url = '/cryptography'
-            const data = {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ action: 'decrypt', key: key, data: dataToDecrypt })
-            }
-            fetch(url, data)
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (myJson) {
-                    console.log(myJson)
-                    $("#data").val(myJson.data)
-                });
-        }
-    </script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 
 </html>
