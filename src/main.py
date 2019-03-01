@@ -22,21 +22,31 @@ def decrypt(key, data):
     return f.decrypt(data.encode()).decode()
 
 
+def post_controller(action, key=None, data=None):
+    action_map = {
+        'get_key': lambda: get_key(),
+        'encrypt': lambda: encrypt(key, data),
+        'decrypt': lambda: decrypt(key, data)
+    }
+    return {'data': action_map[action]()}
+
+
 def main(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
+        return render_template('index.html')
+    elif request.method == 'POST':
         request_json = request.get_json(silent=True)
+        allowed_actions = ('get_key', 'encrypt', 'decrypt')
+
         if not request_json:
             return jsonify({'error': 'No JSON payload'}), 400
         try:
             data = request_json.get('data')
             action = request_json.get('action')
             key = request_json.get('key')
-            if action == 'get_key':
-                return jsonify({'data': str(get_key())})
-            if action == 'encrypt':
-                return jsonify({'data': str(encrypt(key, data))})
-            if action == 'decrypt':
-                return jsonify({'data': str(decrypt(key, data))})
+            if action not in allowed_actions:
+                return jsonify({'error': f'Action not in allowed actions: {allowed_actions}'}), 400
+            return jsonify(post_controller(action, key, data))
         except Exception as err:
             return jsonify({'error': str(err)}), 400
-    return render_template('index.html')
+    return jsonify({'error': 'Method not supported'}), 400

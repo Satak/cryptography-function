@@ -5,7 +5,8 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+    crossorigin="anonymous">
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
     crossorigin="anonymous">
@@ -32,7 +33,43 @@
     crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
-  <script src="{{ url_for('static', filename='app.js') }}"></script>
+  <script>
+    async function API(action, key, inputData) {
+      const url = '/cryptography'
+      const body = {
+        action: action,
+        key: key,
+        data: inputData
+      }
+      const requestParams = {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      }
+
+      const response = await fetch(url, requestParams)
+      if (response.ok) return await response.json()
+      throw new Error(await response.text());
+    }
+
+    function getKey() {
+      API('get_key').then(response => $("#key").val(response.data)).catch(alert)
+    }
+
+    function cryptography(action) {
+      const key = $("#key").val()
+      const inputData = $("#data").val()
+      API(action, key, inputData).then(response => $("#data").val(response.data)).catch(alert)
+    }
+
+    function clearAll() {
+      $("#key").val('')
+      $("#data").val('')
+    }
+  </script>
 </body>
 
 </html>
