@@ -48,5 +48,8 @@ def main(request):
                 return jsonify({'error': f'Action not in allowed actions: {allowed_actions}'}), 400
             return jsonify(post_controller(action, key, data))
         except Exception as err:
-            return jsonify({'error': str(err)}), 400
+            str_err = str(err)
+            if not str_err:
+                str_err = 'Encryption/Decryption function failed. Might be because of invalid key!'
+            return jsonify({'error': str_err}), 400
     return jsonify({'error': 'Method not supported'}), 400
